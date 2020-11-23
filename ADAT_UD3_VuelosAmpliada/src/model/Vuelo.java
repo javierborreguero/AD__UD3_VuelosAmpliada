@@ -15,18 +15,9 @@ public class Vuelo {
 	private int plazas_disponibles;
 	private Vendido vendidos;
 
-	public Vuelo() {
+	public Vuelo(String codigo_vuelo, String origen, String destino, String fecha, String hora, int plazas_totales,
+			int plazas_disponibles) {
 
-	}
-//
-//	public Vuelo(String id) {
-//		this.id = id;
-//	}
-
-	public Vuelo(String id, String codigo_vuelo, String origen, String destino, String fecha, String hora,
-			int plazas_totales, int plazas_disponibles, Vendido vendidos) {
-		super();
-		this.id = id;
 		this.codigo_vuelo = codigo_vuelo;
 		this.origen = origen;
 		this.destino = destino;
@@ -34,41 +25,12 @@ public class Vuelo {
 		this.hora = hora;
 		this.plazas_totales = plazas_totales;
 		this.plazas_disponibles = plazas_disponibles;
-		this.vendidos = vendidos;
+
 	}
 
-	public Vuelo(String codigo_vuelo, String origen, String destino, String fecha, String hora,
-			int plazas_totales, int plazas_disponibles) {
-		super();
+	public Vuelo(String codigo_vuelo, Vendido vendidos) {
 		this.codigo_vuelo = codigo_vuelo;
-		this.origen = origen;
-		this.destino = destino;
-		this.fecha = fecha;
-		this.hora = hora;
-		this.plazas_totales = plazas_totales;
-		this.plazas_disponibles = plazas_disponibles;
-	}
-
-	public Vuelo(String id, String origen, String destino, String fecha, String hora, int plazas_totales,
-			int plazas_disponibles, Vendido vendidos) {
-		super();
-		this.id = id;
-		this.origen = origen;
-		this.destino = destino;
-		this.fecha = fecha;
-		this.hora = hora;
-		this.plazas_totales = plazas_totales;
-		this.plazas_disponibles = plazas_disponibles;
 		this.vendidos = vendidos;
-	}
-
-	public Vuelo(String id, String fecha, String hora, int plazas_totales, int plazas_disponibles) {
-		super();
-		this.id = id;
-		this.fecha = fecha;
-		this.hora = hora;
-		this.plazas_totales = plazas_totales;
-		this.plazas_disponibles = plazas_disponibles;
 	}
 
 	public String getId() {
@@ -133,6 +95,14 @@ public class Vuelo {
 
 	public void setPlazas_disponibles(int plazas_disponibles) {
 		this.plazas_disponibles = plazas_disponibles;
+	}
+
+	public Vendido getVendidos() {
+		return vendidos;
+	}
+
+	public void setVendidos(Vendido vendidos) {
+		this.vendidos = vendidos;
 	}
 
 	@Override

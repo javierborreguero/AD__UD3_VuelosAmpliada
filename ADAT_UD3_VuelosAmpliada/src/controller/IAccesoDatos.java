@@ -10,4 +10,6 @@ public interface IAccesoDatos {
 	// Leer
 	public HashMap<String, Vuelo> leerVuelo() throws IOException;
 
+	// Añadir
+	public boolean inseetarVueloVendido(String codigoVuelo, Vuelo nuevo);
 }

@@ -7,12 +7,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 import controller.Controlador;
+import model.Vendido;
 import model.Vuelo;
 
 public class Test {
 	private Scanner sc;
 	private Controlador mControlador;
-	private String access;
+	private String access, codigoVuelo;
 
 	public Test() {
 		sc = new Scanner(System.in);
@@ -86,14 +87,15 @@ public class Test {
 			if (elegirCodigoVuelo.equalsIgnoreCase(entry.getValue().getCodigo_vuelo())) {
 				System.out.println("Has elegido el vuelo " + entry.getValue().getCodigo_vuelo() + " con origen en "
 						+ entry.getValue().getOrigen() + " y destino en " + entry.getValue().getDestino() + "\n");
-				guardarDatos();
+				codigoVuelo = entry.getValue().getCodigo_vuelo();
+				guardarDatos(codigoVuelo);
 			}
 
 		}
 
 	}
 
-	private void guardarDatos() {
+	private void guardarDatos(String codigoVuelo) throws IOException {
 
 		// El siguiente paso es pedir los datos del comprador (nombre, dni etc.)
 		System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
@@ -125,8 +127,17 @@ public class Test {
 				numero = (int) (random.nextDouble() * 99 + 1000);
 				cadenaPrincipal = sbPrimeraParte.toString() + numero + sbSegundaParte.toString();
 			}
-			String codigoVuelo = cadenaPrincipal.toUpperCase();
-			System.out.println("Se ha generado el siguiente codigo de vuelo " + codigoVuelo);
+
+			String codigoVenta = cadenaPrincipal.toUpperCase();
+			System.out.println("Se ha generado el siguiente codigo de vuelo " + codigoVenta);
+			Vendido mVendido = new Vendido(dni, apellido, nombre, dniPagador, numeroTarjeta, codigoVenta);
+			String checkCodigoVuelo = codigoVuelo;
+			Vuelo mVuelo = new Vuelo(checkCodigoVuelo, mVendido);
+			if (mControlador.insertar(checkCodigoVuelo, mVuelo)) {
+				System.out.println("La información ha sido almacenada correctamente ");
+			} else {
+				System.out.println("No se ha podido almacenar la información");
+			}
 
 			// TODO INSERTAR CAMBIOD EN EL ARRAY VENDIDOS
 			/*-----------------------------------------------------------------------------------------------------*/

@@ -2,6 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
+
+import model.Vendido;
 import model.Vuelo;
 
 public class Controlador {
@@ -22,4 +25,13 @@ public class Controlador {
 		HashMap<String, Vuelo> verInfoVuelos = accesoDatos.leerVuelo();
 		return verInfoVuelos;
 	}
+
+	public boolean insertar(String codigoVuelo, Vuelo vuelo) throws IOException {
+		boolean ok = false;
+		accesoDatos.inseetarVueloVendido(codigoVuelo, vuelo);
+		ok = true;
+		return ok;
+
+	}
+
 }

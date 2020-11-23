@@ -2,15 +2,27 @@ package controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Map.Entry;
+
+import javax.annotation.processing.SupportedSourceVersion;
 
 import org.bson.Document;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
+import model.Vendido;
 import model.Vuelo;
 
 public class AccesoMongo implements IAccesoDatos {
@@ -47,6 +59,7 @@ public class AccesoMongo implements IAccesoDatos {
 	public HashMap<String, Vuelo> leerVuelo() throws IOException {
 		HashMap<String, Vuelo> leerVuelos = new HashMap<String, Vuelo>();
 		MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
+
 		for (Document document : coleccionDeVuelos.find()) {
 			String codigo = document.getString("codigo");
 			String origen = document.getString("origen");
@@ -61,8 +74,24 @@ public class AccesoMongo implements IAccesoDatos {
 			int finalPlazasDisponibles = (int) plazasDisponiblesToDouble;
 			Vuelo mVuelo = new Vuelo(codigo, origen, destino, fecha, hora, finalPlazasTotales, finalPlazasDisponibles);
 			leerVuelos.put(codigo, mVuelo);
+
 		}
 		return leerVuelos;
+	}
+
+	@Override
+	public boolean inseetarVueloVendido(String codigoVuelo, Vuelo nuevo) {
+		MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
+		Document newVendido = new Document().append("dni", nuevo.getVendidos().getDni())
+				.append("apellido", nuevo.getVendidos().getApellido()).append("nombre", nuevo.getVendidos().getNombre())
+				.append("dniPagador", nuevo.getVendidos().getDniPagador())
+				.append("tarjeta", nuevo.getVendidos().getNumeroTarjeta())
+				.append("codigoVenta", nuevo.getVendidos().getCodigoVenta());
+		System.out.println(newVendido);
+	coleccionDeVuelos.updateOne(Filters.eq("codigo", nuevo.getCodigo_vuelo()), Updates.addToSet("vendidos", newVendido));
+		System.out.println(nuevo.getCodigo_vuelo());
+
+		return true;
 	}
 
 }
