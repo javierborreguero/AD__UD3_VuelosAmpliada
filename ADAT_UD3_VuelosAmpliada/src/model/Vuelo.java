@@ -28,9 +28,10 @@ public class Vuelo {
 
 	}
 
-	public Vuelo(String codigo_vuelo, Vendido vendidos) {
+	public Vuelo(String codigo_vuelo, Vendido vendidos, int plazas_disponibles) {
 		this.codigo_vuelo = codigo_vuelo;
 		this.vendidos = vendidos;
+		this.plazas_disponibles = plazas_disponibles;
 	}
 
 	public String getId() {

@@ -2,10 +2,8 @@ package view;
 
 import java.io.IOException;
 import java.util.Map.Entry;
-
 import java.util.Random;
 import java.util.Scanner;
-
 import controller.Controlador;
 import model.Vendido;
 import model.Vuelo;
@@ -87,6 +85,8 @@ public class Test {
 			if (elegirCodigoVuelo.equalsIgnoreCase(entry.getValue().getCodigo_vuelo())) {
 				System.out.println("Has elegido el vuelo " + entry.getValue().getCodigo_vuelo() + " con origen en "
 						+ entry.getValue().getOrigen() + " y destino en " + entry.getValue().getDestino() + "\n");
+				// Se guarda el codigo del vuelo para poesteriormente alamcenar la info nueva en
+				// el array
 				codigoVuelo = entry.getValue().getCodigo_vuelo();
 				guardarDatos(codigoVuelo);
 			}
@@ -112,13 +112,13 @@ public class Test {
 		if (!nombre.equals("") && !apellido.equals("") && !dni.equals("") && !dniPagador.equals("")
 				&& !numeroTarjeta.equals("")) {
 
-			/*----- Se gener un codigo de venta aleatorio (esto es de prueba, hay que pasarlo al controlador) -----*/
+			/*----- Se gener un codigo de venta aleatorio -----*/
 			char[] cadenaCaracteres = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 			StringBuilder sbPrimeraParte = new StringBuilder();
 			StringBuilder sbSegundaParte = new StringBuilder();
 			Random random = new Random();
 			int numero;
-			String cadenaPrincipal = ""; // Inicializamos la Variable/
+			String cadenaPrincipal = "";
 			for (int i = 0; i < 2; i++) {
 				char letrasPrimeraParte = cadenaCaracteres[random.nextInt(cadenaCaracteres.length)];
 				char letrasSegundaParte = cadenaCaracteres[random.nextInt(cadenaCaracteres.length)];
@@ -127,19 +127,40 @@ public class Test {
 				numero = (int) (random.nextDouble() * 99 + 1000);
 				cadenaPrincipal = sbPrimeraParte.toString() + numero + sbSegundaParte.toString();
 			}
-
+			// Cuando el billete ha sido comprado, la cantidad de plazas disponibles
+			// disminuye
+			int cogerPlazasTotales = 0;
+			int cogerPlazasDisponibles = 0;
+			int asgianrNumeroAsiento = 0;
+			int updatePlazasDisponibles = 0;
+			for (Entry<String, Vuelo> entry : mControlador.read().entrySet()) {
+				if (codigoVuelo.equalsIgnoreCase(entry.getValue().getCodigo_vuelo())) {
+					cogerPlazasTotales = entry.getValue().getPlazas_totales();
+					cogerPlazasDisponibles = entry.getValue().getPlazas_disponibles();
+					int calcularNumeroAsinto = cogerPlazasTotales - cogerPlazasDisponibles;
+					asgianrNumeroAsiento = calcularNumeroAsinto + 1;
+					updatePlazasDisponibles = cogerPlazasDisponibles - 1;
+				}
+			}
 			String codigoVenta = cadenaPrincipal.toUpperCase();
-			System.out.println("Se ha generado el siguiente codigo de vuelo " + codigoVenta);
-			Vendido mVendido = new Vendido(dni, apellido, nombre, dniPagador, numeroTarjeta, codigoVenta);
+			// Los datos del usuario son almacenados
+			Vendido mVendido = new Vendido(asgianrNumeroAsiento, dni, apellido, nombre, dniPagador, numeroTarjeta,
+					codigoVenta);
+			// Esta variables sirve para comprobar que el codigo del vuelos corresponde con
+			// el introducido
 			String checkCodigoVuelo = codigoVuelo;
-			Vuelo mVuelo = new Vuelo(checkCodigoVuelo, mVendido);
+			// Se guarda la información
+			Vuelo mVuelo = new Vuelo(checkCodigoVuelo, mVendido, updatePlazasDisponibles);
 			if (mControlador.insertar(checkCodigoVuelo, mVuelo)) {
-				System.out.println("La información ha sido almacenada correctamente ");
+				// Si todo ha ido bien, se muetsra al usuario el codigo de venta y el asiento
+				// que le han asignado
+				System.out.println("La información ha sido almacenada correctamente");
+				System.out.println("\nSe ha generado el siguiete codigo venta: " + codigoVenta);
+
 			} else {
 				System.out.println("No se ha podido almacenar la información");
 			}
 
-			// TODO INSERTAR CAMBIOD EN EL ARRAY VENDIDOS
 			/*-----------------------------------------------------------------------------------------------------*/
 		} else {
 			System.err.println("ERROR: Todos los datos deben estar completos");

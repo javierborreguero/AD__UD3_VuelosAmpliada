@@ -9,10 +9,6 @@ public class Vendido {
 	private String numeroTarjeta;
 	private String codigoVenta;
 
-	public Vendido(int asiento) {
-		this.asiento = asiento;
-	}
-
 	public Vendido(int asiento, String dni, String apellido, String nombre, String dniPagador, String numeroTarjeta,
 			String codigoVenta) {
 		super();
@@ -24,16 +20,7 @@ public class Vendido {
 		this.numeroTarjeta = numeroTarjeta;
 		this.codigoVenta = codigoVenta;
 	}
-	public Vendido(String dni, String apellido, String nombre, String dniPagador, String numeroTarjeta,
-			String codigoVenta) {
-		super();
-		this.dni = dni;
-		this.apellido = apellido;
-		this.nombre = nombre;
-		this.dniPagador = dniPagador;
-		this.numeroTarjeta = numeroTarjeta;
-		this.codigoVenta = codigoVenta;
-	}
+
 	public int getAsiento() {
 		return asiento;
 	}
@@ -89,9 +76,6 @@ public class Vendido {
 	public void setCodigoVenta(String codigoVenta) {
 		this.codigoVenta = codigoVenta;
 	}
-
-
-
 
 	@Override
 	public String toString() {

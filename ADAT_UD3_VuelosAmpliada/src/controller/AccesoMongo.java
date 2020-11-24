@@ -2,27 +2,15 @@ package controller;
 
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.Map.Entry;
-
-import javax.annotation.processing.SupportedSourceVersion;
-
 import org.bson.Document;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-
-import model.Vendido;
 import model.Vuelo;
 
 public class AccesoMongo implements IAccesoDatos {
@@ -81,15 +69,23 @@ public class AccesoMongo implements IAccesoDatos {
 
 	@Override
 	public boolean inseetarVueloVendido(String codigoVuelo, Vuelo nuevo) {
+		// Se actualizan las plazas disponibles en el vuelo
 		MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
-		Document newVendido = new Document().append("dni", nuevo.getVendidos().getDni())
-				.append("apellido", nuevo.getVendidos().getApellido()).append("nombre", nuevo.getVendidos().getNombre())
+		BasicDBObject searchFlight = new BasicDBObject();
+		searchFlight.append("codigo", nuevo.getCodigo_vuelo());
+		BasicDBObject updateFLight = new BasicDBObject();
+		updateFLight.append("$set", new BasicDBObject().append("plazas_disponibles", nuevo.getPlazas_disponibles()));
+		coleccionDeVuelos.updateOne(searchFlight, updateFLight);
+		// Se añaden los datos relativos al (asiento, dni, apellido, nombre, dniPagador,
+		// tarjeta, codigoVenta)
+		Document newVendido = new Document().append("asiento", nuevo.getVendidos().getAsiento())
+				.append("dni", nuevo.getVendidos().getDni()).append("apellido", nuevo.getVendidos().getApellido())
+				.append("nombre", nuevo.getVendidos().getNombre())
 				.append("dniPagador", nuevo.getVendidos().getDniPagador())
 				.append("tarjeta", nuevo.getVendidos().getNumeroTarjeta())
 				.append("codigoVenta", nuevo.getVendidos().getCodigoVenta());
-		System.out.println(newVendido);
-	coleccionDeVuelos.updateOne(Filters.eq("codigo", nuevo.getCodigo_vuelo()), Updates.addToSet("vendidos", newVendido));
-		System.out.println(nuevo.getCodigo_vuelo());
+		coleccionDeVuelos.updateOne(Filters.eq("codigo", nuevo.getCodigo_vuelo()),
+				Updates.addToSet("vendidos", newVendido));
 
 		return true;
 	}
