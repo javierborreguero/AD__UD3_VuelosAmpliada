@@ -2,12 +2,19 @@ package controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 import model.Vuelo;
 
 public class Controlador {
 	private String mongoDBConfigurationFile;
 	IAccesoDatos accesoDatos;
-
+	
 	public Controlador() {
 		mongoDBConfigurationFile = "file/mongoConnection.properties";
 
@@ -30,5 +37,6 @@ public class Controlador {
 		return ok;
 
 	}
+	
 
 }

@@ -34,6 +34,10 @@ public class Vuelo {
 		this.plazas_disponibles = plazas_disponibles;
 	}
 
+	public Vuelo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getId() {
 		return id;
 	}

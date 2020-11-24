@@ -2,6 +2,13 @@ package view;
 
 import java.io.IOException;
 import java.util.Map.Entry;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 import java.util.Random;
 import java.util.Scanner;
 import controller.Controlador;
@@ -12,7 +19,9 @@ public class Test {
 	private Scanner sc;
 	private Controlador mControlador;
 	private String access, codigoVuelo;
-
+	MongoCollection<Document> coll;
+	MongoDatabase mongodb;
+	MongoClient cl;
 	public Test() {
 		sc = new Scanner(System.in);
 		mControlador = new Controlador();
@@ -53,7 +62,23 @@ public class Test {
 				cancelarVuelo();
 				break;
 			case 3:
-				modificarVuelo();
+				System.out.println("Introduce el ID a cambiar");
+				int id = sc.nextInt();
+				sc.nextLine();
+				Vendido v2 = new Vendido();
+				System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
+				System.out.print("Escribe tu nombre ");
+				v2.setNombre(sc.next());
+				System.out.print("Escribe tu primer apellido ");
+				v2.setApellido(sc.next());
+				System.out.print("Escribe tu DNI ");
+				v2.setDni(sc.next());
+				System.out.print("Escribe el DNI de la persona que va a pagar el vuelo ");
+				v2.setDniPagador(sc.next());
+				System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
+				v2.setNumeroTarjeta(sc.next());
+				sc.nextLine();
+				updateData(id, v2);
 				break;
 			case 4:
 				System.out.println("CERRANDO");
@@ -191,8 +216,23 @@ public class Test {
 	}
 
 	/*------------------- MÉTODOS PARA MODIFICAR -------------------*/
-	private void modificarVuelo() {
-		// TODO Auto-generated method stub
+	public void updateData(int id, Vendido vuelos) {
+		try {
+			cl = new MongoClient("localhost", 27017);
+			mongodb = cl.getDatabase("adat_vuelos");
+			coll = mongodb.getCollection("vuelos");
+			Document doc = new Document("id", id);
+			Document doc1 = new Document();
+			doc1.append("dni", vuelos.getDni());
+			doc1.append("nombre", vuelos.getNombre());
+			doc1.append("dniPagador", vuelos.getDniPagador());
+			doc1.append("tarjeta", vuelos.getNumeroTarjeta());
+			doc1.append("codigoVenta", vuelos.getCodigoVenta());
+			Document aux = new Document("$set", doc1);
+			coll.updateOne(doc, aux);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 }

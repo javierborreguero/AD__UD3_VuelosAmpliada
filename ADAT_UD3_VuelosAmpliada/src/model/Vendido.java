@@ -21,6 +21,10 @@ public class Vendido {
 		this.codigoVenta = codigoVenta;
 	}
 
+	public Vendido() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getAsiento() {
 		return asiento;
 	}
