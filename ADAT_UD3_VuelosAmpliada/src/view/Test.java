@@ -62,7 +62,7 @@ public class Test {
 				cancelarVuelo();
 				break;
 			case 3:
-				System.out.println("Introduce el ID a cambiar");
+				System.out.println("Introduce el DNI a cambiar");
 				int id = sc.nextInt();
 				sc.nextLine();
 				Vendido v2 = new Vendido();
@@ -225,6 +225,7 @@ public class Test {
 			Document doc1 = new Document();
 			doc1.append("dni", vuelos.getDni());
 			doc1.append("nombre", vuelos.getNombre());
+			doc1.append("apellido", vuelos.getApellido());
 			doc1.append("dniPagador", vuelos.getDniPagador());
 			doc1.append("tarjeta", vuelos.getNumeroTarjeta());
 			doc1.append("codigoVenta", vuelos.getCodigoVenta());
