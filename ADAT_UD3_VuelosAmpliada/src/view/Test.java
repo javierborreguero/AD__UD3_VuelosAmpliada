@@ -65,6 +65,9 @@ public class Test {
 				System.out.println("Introduce el DNI a cambiar");
 				int id = sc.nextInt();
 				sc.nextLine();
+				System.out.println("Introduce el codigo de venta a cambiar");
+				int codv = sc.nextInt();
+				sc.nextLine();
 				Vendido v2 = new Vendido();
 				System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
 				System.out.print("Escribe tu nombre ");
@@ -78,7 +81,7 @@ public class Test {
 				System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
 				v2.setNumeroTarjeta(sc.next());
 				sc.nextLine();
-				updateData(id, v2);
+				updateData(id,codv, v2);
 				break;
 			case 4:
 				System.out.println("CERRANDO");
@@ -216,12 +219,13 @@ public class Test {
 	}
 
 	/*------------------- MÉTODOS PARA MODIFICAR -------------------*/
-	public void updateData(int id, Vendido vuelos) {
+	public void updateData(int id, int codv, Vendido vuelos) {
 		try {
 			cl = new MongoClient("localhost", 27017);
 			mongodb = cl.getDatabase("adat_vuelos");
 			coll = mongodb.getCollection("vuelos");
 			Document doc = new Document("id", id);
+			doc.append("codigoVenta", codv);
 			Document doc1 = new Document();
 			doc1.append("dni", vuelos.getDni());
 			doc1.append("nombre", vuelos.getNombre());
