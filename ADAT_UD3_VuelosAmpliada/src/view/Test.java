@@ -64,11 +64,13 @@ public class Test {
 				cancelarVuelo();
 				break;
 			case 3:
+				System.out.println("Introduce el vuelo al que pertecene tu billete");
+				String flight = sc.next();
 				System.out.println("Introduce el DNI a cambiar");
 				String id = sc.next();
 				sc.nextLine();
 				System.out.println("Introduce el codigo de venta a cambiar");
-				int codv = sc.nextInt();
+				String codv = sc.next();
 				sc.nextLine();
 				Vendido v2 = new Vendido();
 				System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
@@ -83,7 +85,7 @@ public class Test {
 				System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
 				v2.setNumeroTarjeta(sc.next());
 				sc.nextLine();
-				updateData(id,codv, v2);
+				updateData(id,codv, v2,flight );
 				break;
 			case 4:
 				System.out.println("CERRANDO");
