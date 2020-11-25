@@ -245,7 +245,7 @@ public class Test {
 				doc.append("codigoVenta", codv);
 				Document doc1 = new Document();
 				JSONObject obj = new JSONObject();
-				obj.put("id", vuelos.getDni());
+				obj.put("dni", vuelos.getDni());
 				obj.put("nombre", vuelos.getNombre());
 				obj.put("apellido", vuelos.getApellido());
 				obj.put("dniPagador", vuelos.getDniPagador());
