@@ -105,7 +105,8 @@ public class AccesoMongo implements IAccesoDatos {
 			Document auxPull= new Document("$pull" ,cambios);
 			//System.out.println(auxPull.toJson());
 			coleccionDeVuelos.updateOne(quienCambio, auxPull);
-			System.out.println("Vuelo cancelado correctamente");		
+			System.out.println("Vuelo cancelado correctamente");	
+		
 				
 	}
 	
