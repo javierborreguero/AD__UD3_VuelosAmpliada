@@ -253,7 +253,7 @@ public class Test {
 				obj.put("codigoVenta", vuelos.getCodigoVenta());
 				JSONArray arr = new JSONArray();
 				arr.add(obj);
-				doc1.append("ventas", arr);
+				doc1.append("vendidos", arr);
 				Document aux = new Document("$set", doc1);
 				coll.updateOne(doc, aux);
 			}
