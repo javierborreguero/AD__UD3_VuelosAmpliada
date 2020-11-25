@@ -223,7 +223,7 @@ public class Test {
 		String dni = sc.nextLine();
 		System.out.println("Introduce el codigo de venta:");
 		String codigoVenta= sc.nextLine();
-		mControlador.borrar(codigo_vuelo);
+		mControlador.borrar(codigo_vuelo, dni, codigoVenta);
 		
 		
 	
