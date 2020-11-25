@@ -96,8 +96,6 @@ public class AccesoMongo implements IAccesoDatos {
 	public void borrarVueloComprado(String codigo_vuelo, String dni, String codigoVenta) throws IOException {
 
 			MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
-			//Document doc = new Document("codigo", codigo_vuelo);
-			//coleccionDeVuelos.deleteOne(doc);
 			Document quienCambio= new Document("codigo", codigo_vuelo);
 			Document billeteDel = new Document("dni", dni);
 			billeteDel.append("codigoVenta", codigoVenta);
