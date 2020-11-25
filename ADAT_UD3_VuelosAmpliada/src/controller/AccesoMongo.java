@@ -89,5 +89,24 @@ public class AccesoMongo implements IAccesoDatos {
 
 		return true;
 	}
+	
+	
+	public boolean borrarVueloComprado(String id) throws IOException {
+		if (leerVuelo().get(id) != null) {
+			MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
+			coleccionDeVuelos.deleteOne(Filters.eq("id", id));
+			System.out.println("Vuelo cancelado correctamente");
+			//coleccionDeVuelos.updateOne(Filters.eq("codigo", getCodigo_vuelo()), Updates.addToSet("plazas disponibles", plazas_disponibles.getPlazasDisponibles()+1));
+			
+			return true;
+		}
+		return false;
+	}
+
+	
+	
+	
+	
+	
 
 }

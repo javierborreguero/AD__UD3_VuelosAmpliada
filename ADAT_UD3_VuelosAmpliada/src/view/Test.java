@@ -213,9 +213,20 @@ public class Test {
 	/*--------------------------------------*/
 
 	/*------------------- MÉTODOS PARA CANCELAR/BORRAR -------------------*/
-	private void cancelarVuelo() {
-		// TODO En este método se trabajará la opción de cancelar un vuelo
-
+	private void cancelarVuelo() throws IOException {
+		
+		sc.nextLine();
+		System.out.println("Quieres cancelar un vuelo que has comprado, necesitamos los datos para poder cancelarlo");
+		System.out.println("Introduce el codigo de vuelo que desea cancelar: ");
+		String codigo_vuelo = sc.nextLine();
+		System.out.println("Introduce el dni: ");
+		String dni = sc.nextLine();
+		System.out.println("Introduce el codigo de venta:");
+		String codigoVenta= sc.nextLine();
+		mControlador.borrar(codigo_vuelo);
+		
+		
+	
 	}
 
 	/*------------------- MÉTODOS PARA MODIFICAR -------------------*/

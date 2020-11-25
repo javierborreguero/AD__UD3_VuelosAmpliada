@@ -12,4 +12,7 @@ public interface IAccesoDatos {
 
 	// Añadir
 	public boolean inseetarVueloVendido(String codigoVuelo, Vuelo nuevo);
+
+
+	boolean borrarVueloComprado(String Id) throws IOException;
 }
