@@ -97,8 +97,8 @@ public class AccesoMongo implements IAccesoDatos {
 			Document doc = new Document("codigo", codigo_vuelo);
 			coleccionDeVuelos.deleteOne(doc);
 			System.out.println("Vuelo cancelado correctamente");
-			System.out.println(coleccionDeVuelos.toString());
-			System.out.println(codigo_vuelo);
+			//System.out.println(coleccionDeVuelos.toString());
+			//System.out.println(codigo_vuelo);
 			//coleccionDeVuelos.updateOne(Filters.eq("codigo", getCodigo_vuelo()), Updates.addToSet("plazas disponibles", plazas_disponibles.getPlazasDisponibles()+1));
 			
 		
