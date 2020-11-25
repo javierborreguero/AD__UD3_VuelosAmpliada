@@ -11,6 +11,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+
+import model.Vendido;
 import model.Vuelo;
 
 public class AccesoMongo implements IAccesoDatos {
@@ -106,6 +108,7 @@ public class AccesoMongo implements IAccesoDatos {
 			System.out.println("Vuelo cancelado correctamente");		
 				
 	}
+	
 
 	
 

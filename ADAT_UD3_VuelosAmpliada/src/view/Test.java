@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import org.bson.Document;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -62,11 +64,13 @@ public class Test {
 				cancelarVuelo();
 				break;
 			case 3:
+				System.out.println("Introduce el vuelo al que pertecene tu billete");
+				String flight = sc.next();
 				System.out.println("Introduce el DNI a cambiar");
-				int id = sc.nextInt();
+				String id = sc.next();
 				sc.nextLine();
 				System.out.println("Introduce el codigo de venta a cambiar");
-				int codv = sc.nextInt();
+				String codv = sc.next();
 				sc.nextLine();
 				Vendido v2 = new Vendido();
 				System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
@@ -81,7 +85,7 @@ public class Test {
 				System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
 				v2.setNumeroTarjeta(sc.next());
 				sc.nextLine();
-				updateData(id,codv, v2);
+				updateData(id,codv, v2,flight );
 				break;
 			case 4:
 				System.out.println("CERRANDO");
@@ -230,22 +234,30 @@ public class Test {
 	}
 
 	/*------------------- MÉTODOS PARA MODIFICAR -------------------*/
-	public void updateData(int id, int codv, Vendido vuelos) {
+	public void updateData(String id, String codv, Vendido vuelos, String codigoVuelo) {
 		try {
 			cl = new MongoClient("localhost", 27017);
-			mongodb = cl.getDatabase("adat_vuelos");
+			mongodb = cl.getDatabase("adat_vuelos2_0");
 			coll = mongodb.getCollection("vuelos");
-			Document doc = new Document("id", id);
-			doc.append("codigoVenta", codv);
-			Document doc1 = new Document();
-			doc1.append("dni", vuelos.getDni());
-			doc1.append("nombre", vuelos.getNombre());
-			doc1.append("apellido", vuelos.getApellido());
-			doc1.append("dniPagador", vuelos.getDniPagador());
-			doc1.append("tarjeta", vuelos.getNumeroTarjeta());
-			doc1.append("codigoVenta", vuelos.getCodigoVenta());
-			Document aux = new Document("$set", doc1);
-			coll.updateOne(doc, aux);
+			Document codVuelo=new Document("codigo_vuelo",codigoVuelo);
+			if (coll.find(codVuelo) != null) {
+				Document doc = new Document("dni", id);
+				doc.append("codigoVenta", codv);
+				Document doc1 = new Document();
+				JSONObject obj = new JSONObject();
+				obj.put("dni", vuelos.getDni());
+				obj.put("nombre", vuelos.getNombre());
+				obj.put("apellido", vuelos.getApellido());
+				obj.put("dniPagador", vuelos.getDniPagador());
+				obj.put("tarjeta", vuelos.getNumeroTarjeta());
+				obj.put("codigoVenta", vuelos.getCodigoVenta());
+				JSONArray arr = new JSONArray();
+				arr.add(obj);
+				doc1.append("vendidos", arr);
+				Document aux = new Document("$set", doc1);
+				coll.updateOne(doc, aux);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
