@@ -39,11 +39,11 @@ public class Controlador {
 	}
 	
 
-	public boolean borrar(String id) throws IOException {
+	public void borrar(String codigo_vuelo) throws IOException {
 		boolean ok = false;
-		accesoDatos.borrarVueloComprado(id);
+		accesoDatos.borrarVueloComprado(codigo_vuelo);
 		ok = true;
-		return ok;
+		
 
 	}
 
