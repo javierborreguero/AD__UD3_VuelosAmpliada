@@ -103,13 +103,15 @@ public class AccesoMongo implements IAccesoDatos {
 			Document auxPull= new Document("$pull" ,cambios);
 			//System.out.println(auxPull.toJson());
 			coleccionDeVuelos.updateOne(quienCambio, auxPull);
+			
+			//Al eliminar los vuelos se aumenta una plaza disponible
+			
+			Document aumentPlaza = new Document("plazas_disponibles", 1);
+			Document auxInc= new Document("$inc" ,aumentPlaza);
+			coleccionDeVuelos.updateOne(quienCambio, auxInc);
 			System.out.println("Vuelo cancelado correctamente");	
-		
-				
+					
 	}
 	
-
-	
-
 
 }
