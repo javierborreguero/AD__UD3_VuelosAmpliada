@@ -9,6 +9,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import model.Vendido;
 import model.Vuelo;
 
 public class Controlador {
@@ -47,7 +48,11 @@ public class Controlador {
 
 	}
 
-	
+	public void updateData(String id, String codv, Vendido vuelos, String codigoVuelo) throws IOException {
+		boolean ok = false;
+		accesoDatos.updateData(id, codv, vuelos, codigoVuelo);
+		ok = true;
+	}
 	
 	
 	

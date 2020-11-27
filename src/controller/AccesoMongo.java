@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 import org.bson.Document;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -21,6 +24,9 @@ public class AccesoMongo implements IAccesoDatos {
 	private int port;
 	Properties mongoConnectionProperties;
 	private MongoDatabase mongoDatabase;
+	MongoCollection<Document> coll;
+	MongoDatabase mongodb;
+	MongoClient cl;
 
 	public AccesoMongo(String archivo) {
 		mongoConnectionProperties = new Properties();
@@ -91,27 +97,51 @@ public class AccesoMongo implements IAccesoDatos {
 
 		return true;
 	}
-	
-	
+
 	public void borrarVueloComprado(String codigo_vuelo, String dni, String codigoVenta) throws IOException {
 
-			MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
-			Document quienCambio= new Document("codigo", codigo_vuelo);
-			Document billeteDel = new Document("dni", dni);
-			billeteDel.append("codigoVenta", codigoVenta);
-			Document cambios = new Document("vendidos", billeteDel);
-			Document auxPull= new Document("$pull" ,cambios);
-			//System.out.println(auxPull.toJson());
-			coleccionDeVuelos.updateOne(quienCambio, auxPull);
-			
-			//Al eliminar los vuelos se aumenta una plaza disponible
-			
-			Document aumentPlaza = new Document("plazas_disponibles", 1);
-			Document auxInc= new Document("$inc" ,aumentPlaza);
-			coleccionDeVuelos.updateOne(quienCambio, auxInc);
-			System.out.println("Vuelo cancelado correctamente");	
-					
+		MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
+		Document quienCambio = new Document("codigo", codigo_vuelo);
+		Document billeteDel = new Document("dni", dni);
+		billeteDel.append("codigoVenta", codigoVenta);
+		Document cambios = new Document("vendidos", billeteDel);
+		Document auxPull = new Document("$pull", cambios);
+		// System.out.println(auxPull.toJson());
+		coleccionDeVuelos.updateOne(quienCambio, auxPull);
+
+		// Al eliminar los vuelos se aumenta una plaza disponible
+
+		Document aumentPlaza = new Document("plazas_disponibles", 1);
+		Document auxInc = new Document("$inc", aumentPlaza);
+		coleccionDeVuelos.updateOne(quienCambio, auxInc);
+		System.out.println("Vuelo cancelado correctamente");
+
 	}
-	
+
+	public void updateData(String id, String codv, Vendido vuelos, String codigoVuelo) {
+		try {
+			MongoCollection<Document> coleccionDeVuelos = mongoDatabase.getCollection(tableVuelos);
+			Document codVuelo = new Document("codigo", codigoVuelo);
+			if (coleccionDeVuelos.find(codVuelo) != null) {
+				Document doc1 = new Document();
+				JSONObject obj = new JSONObject();
+				obj.put("asiento", vuelos.getAsiento());
+				obj.put("dni", vuelos.getDni());
+				obj.put("nombre", vuelos.getNombre());
+				obj.put("apellido", vuelos.getApellido());
+				obj.put("dniPagador", vuelos.getDniPagador());
+				obj.put("tarjeta", vuelos.getNumeroTarjeta());
+				obj.put("codigoVenta", codv);
+				JSONArray arr = new JSONArray();
+				arr.add(obj);
+				doc1.append("vendidos", arr);
+				Document aux = new Document("$set", doc1);
+				coleccionDeVuelos.updateOne(codVuelo, aux);
+			}
+
+		} catch (Exception e) {
+			System.err.println("ERROR: Lo sentimos ha habido al actualizar los datos");
+		}
+	}
 
 }

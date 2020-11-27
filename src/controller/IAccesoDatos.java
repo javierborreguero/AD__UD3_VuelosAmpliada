@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.HashMap;
 
+import model.Vendido;
 import model.Vuelo;
 
 /* Interfaz que gestiona las operaciones en funcion dek acceso a datos seleccionado*/
@@ -15,4 +16,5 @@ public interface IAccesoDatos {
 
 
 	public void borrarVueloComprado(String codigo_vuelo, String dni, String codigoVenta) throws IOException;
+	public void updateData(String id, String codv, Vendido vuelos, String codigoVuelo) throws IOException;
 }

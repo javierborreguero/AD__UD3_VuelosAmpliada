@@ -2,15 +2,6 @@ package view;
 
 import java.io.IOException;
 import java.util.Map.Entry;
-
-import org.bson.Document;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
 import java.util.Random;
 import java.util.Scanner;
 import controller.Controlador;
@@ -21,9 +12,7 @@ public class Test {
 	private Scanner sc;
 	private Controlador mControlador;
 	private String access, codigoVuelo;
-	MongoCollection<Document> coll;
-	MongoDatabase mongodb;
-	MongoClient cl;
+
 	public Test() {
 		sc = new Scanner(System.in);
 		mControlador = new Controlador();
@@ -64,28 +53,7 @@ public class Test {
 				cancelarVuelo();
 				break;
 			case 3:
-				System.out.println("Introduce el vuelo al que pertecene tu billete");
-				String flight = sc.next();
-				System.out.println("Introduce el DNI a cambiar");
-				String id = sc.next();
-				sc.nextLine();
-				System.out.println("Introduce el codigo de venta a cambiar");
-				String codv = sc.next();
-				sc.nextLine();
-				Vendido v2 = new Vendido();
-				System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
-				System.out.print("Escribe tu nombre ");
-				v2.setNombre(sc.next());
-				System.out.print("Escribe tu primer apellido ");
-				v2.setApellido(sc.next());
-				System.out.print("Escribe tu DNI ");
-				v2.setDni(sc.next());
-				System.out.print("Escribe el DNI de la persona que va a pagar el vuelo ");
-				v2.setDniPagador(sc.next());
-				System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
-				v2.setNumeroTarjeta(sc.next());
-				sc.nextLine();
-				updateData(id,codv, v2,flight );
+				updateData();
 				break;
 			case 4:
 				System.out.println("CERRANDO");
@@ -218,7 +186,7 @@ public class Test {
 
 	/*------------------- MÉTODOS PARA CANCELAR/BORRAR -------------------*/
 	private void cancelarVuelo() throws IOException {
-		
+
 		sc.nextLine();
 		System.out.println("Quieres cancelar un vuelo que has comprado, necesitamos los datos para poder cancelarlo");
 		System.out.println("Introduce el codigo de vuelo que desea cancelar: ");
@@ -226,39 +194,40 @@ public class Test {
 		System.out.println("Introduce el dni: ");
 		String dni = sc.nextLine();
 		System.out.println("Introduce el codigo de venta:");
-		String codigoVenta= sc.nextLine();
+		String codigoVenta = sc.nextLine();
 		mControlador.borrar(codigo_vuelo, dni, codigoVenta);
-		
-		
-	
+
 	}
 
 	/*------------------- MÉTODOS PARA MODIFICAR -------------------*/
-	public void updateData(String id, String codv, Vendido vuelos, String codigoVuelo) {
-		try {
-			cl = new MongoClient("localhost", 27017);
-			mongodb = cl.getDatabase("adat_vuelos2_0");
-			coll = mongodb.getCollection("vuelos");
-			Document codVuelo=new Document("codigo_vuelo",codigoVuelo);
-			if (coll.find(codVuelo) != null) {
-				Document doc1 = new Document();
-				JSONObject obj = new JSONObject();
-				obj.put("dni", vuelos.getDni());
-				obj.put("nombre", vuelos.getNombre());
-				obj.put("apellido", vuelos.getApellido());
-				obj.put("dniPagador", vuelos.getDniPagador());
-				obj.put("tarjeta", vuelos.getNumeroTarjeta());
-				obj.put("codigoVenta", vuelos.getCodigoVenta());
-				JSONArray arr = new JSONArray();
-				arr.add(obj);
-				doc1.append("vendidos", arr);
-				Document aux = new Document("$set", doc1);
-				coll.updateOne(codVuelo, aux);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void updateData() throws IOException {
+		boolean changesSaved = false;
+		System.out.println("Introduce el vuelo al que pertecene tu billete");
+		String flight = sc.next();
+		System.out.println("Introduce el DNI a cambiar");
+		String id = sc.next();
+		sc.nextLine();
+		System.out.println("Introduce el codigo de venta a cambiar");
+		String codv = sc.next();
+		sc.nextLine();
+		Vendido v2 = new Vendido();
+		System.out.println("Para poder efectuar la compra primero necesitamos sus datos.\n");
+		System.out.print("Escribe tu nombre ");
+		v2.setNombre(sc.next());
+		System.out.print("Escribe tu primer apellido ");
+		v2.setApellido(sc.next());
+		System.out.print("Escribe tu DNI ");
+		v2.setDni(sc.next());
+		System.out.print("Escribe el DNI de la persona que va a pagar el vuelo ");
+		v2.setDniPagador(sc.next());
+		System.out.print("Por último, indique el número de tarjeta con la que se va a pagar ");
+		v2.setNumeroTarjeta(sc.next());
+		sc.nextLine();
+		mControlador.updateData(id, codv, v2, flight);
+		if (!changesSaved) {
+			System.out.println("La información ha sido modificada correctamente");
+		} else {
+			System.out.println("Se ha producido un error al actualizar la información");
 		}
-
 	}
 }
