@@ -241,8 +241,6 @@ public class Test {
 			coll = mongodb.getCollection("vuelos");
 			Document codVuelo=new Document("codigo_vuelo",codigoVuelo);
 			if (coll.find(codVuelo) != null) {
-				Document doc = new Document("dni", id);
-				doc.append("codigoVenta", codv);
 				Document doc1 = new Document();
 				JSONObject obj = new JSONObject();
 				obj.put("dni", vuelos.getDni());
@@ -255,7 +253,7 @@ public class Test {
 				arr.add(obj);
 				doc1.append("vendidos", arr);
 				Document aux = new Document("$set", doc1);
-				coll.updateOne(doc, aux);
+				coll.updateOne(codVuelo, aux);
 			}
 			
 		} catch (Exception e) {
