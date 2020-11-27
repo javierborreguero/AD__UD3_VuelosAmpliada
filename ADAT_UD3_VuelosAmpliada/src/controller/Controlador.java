@@ -39,9 +39,9 @@ public class Controlador {
 	}
 	
 
-	public void borrar(String codigo_vuelo) throws IOException {
+	public void borrar(String codigo_vuelo, String  dni, String codigoVenta) throws IOException {
 		boolean ok = false;
-		accesoDatos.borrarVueloComprado(codigo_vuelo);
+		accesoDatos.borrarVueloComprado(codigo_vuelo, dni, codigoVenta);
 		ok = true;
 		
 

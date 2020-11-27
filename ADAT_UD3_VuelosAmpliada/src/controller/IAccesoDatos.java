@@ -14,5 +14,5 @@ public interface IAccesoDatos {
 	public boolean inseetarVueloVendido(String codigoVuelo, Vuelo nuevo);
 
 
-	public void borrarVueloComprado(String id) throws IOException;
+	public void borrarVueloComprado(String codigo_vuelo, String dni, String codigoVenta) throws IOException;
 }
